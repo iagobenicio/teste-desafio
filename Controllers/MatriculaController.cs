@@ -26,8 +26,12 @@ namespace teste_desafio.Controllers
             try
             {
                 var matricula = _mapper.Map<Matricula>(matriculaViewModel);
+
                 _matriculaService.EnrollAluno(matricula);
-                return Created(nameof(GetAll),matriculaViewModel);
+
+                var alunoRegistered = _mapper.Map<MatriculaViewModel>(matricula);
+
+                return StatusCode(StatusCodes.Status201Created,alunoRegistered);
             }
             catch (Exception e)
             {

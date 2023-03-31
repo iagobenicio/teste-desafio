@@ -32,11 +32,14 @@ namespace teste_desafio.Controllers
                 var alunoEntity = _mapper.Map<Aluno>(alunoViewModel);
 
                 _alunoservice.Register(alunoEntity,turmaId);
-                return Ok(alunoViewModel);
+
+                var alunoRegistered = _mapper.Map<AlunoViewModel>(alunoEntity);
+
+                return StatusCode(StatusCodes.Status201Created,alunoRegistered);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(new {e.Message});
             }
 
         }   
@@ -55,10 +58,10 @@ namespace teste_desafio.Controllers
                 return Ok(alunosViewModel);
 
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 
-                return BadRequest(e.Message);
+                return BadRequest(new {e.Message});
             }
  
         }
@@ -70,8 +73,12 @@ namespace teste_desafio.Controllers
             {   
 
                 var alunoEntity = _mapper.Map<Aluno>(alunoViewModel);
+
                 _alunoservice.Update(alunoEntity,id);
-                return Ok(alunoViewModel);
+
+                var alunoUpdated = _mapper.Map<AlunoViewModel>(alunoEntity);
+
+                return Ok(alunoUpdated);
 
 
             }
@@ -79,10 +86,10 @@ namespace teste_desafio.Controllers
             {
                 return NotFound(new {e.Message});
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 
-                return BadRequest(e.Message);
+                return BadRequest(new {e.Message});
             }
                 
         }
@@ -99,9 +106,9 @@ namespace teste_desafio.Controllers
             {
                 return NotFound(new {e.Message});
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new {e.Message});
             }
         }
 
