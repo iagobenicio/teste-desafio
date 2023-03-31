@@ -12,6 +12,6 @@ namespace teste_desafio.domain.entities
         [Required]
         public int Ano { get; set; }
 
-        public ICollection<Matricula>? Matricula {get;set;}
+        public ICollection<Matricula>? Matricula { get; set; }
     }
 }

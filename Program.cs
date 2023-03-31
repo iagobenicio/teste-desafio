@@ -11,9 +11,11 @@ var config = new MapperConfiguration(config =>
 {
 
     config.CreateMap<Aluno,AlunoViewModel>();
+    config.CreateMap<AlunoViewModel,Aluno>();
     config.CreateMap<Turma,TurmaViewModel>();
     config.CreateMap<TurmaViewModel,Turma>();
-    config.CreateMap<Matricula,MatriculaViewModel>();
+    config.CreateMap<MatriculaViewModel,Matricula>();
+    config.CreateMap<Matricula,MatriculaRelacaoViewModel>();
 
 });
 
@@ -23,8 +25,13 @@ IMapper mapper = config.CreateMapper();
 builder.Services.AddDbContext<MatriculaContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<TurmaRepository,TurmaRepository>();
+builder.Services.AddScoped<ITurmaRepository,TurmaRepository>();
 builder.Services.AddScoped<ITurmaService,TurmaService>();
+builder.Services.AddScoped<IAlunoRepository,AlunoRepository>();
+builder.Services.AddScoped<IAlunoService,AlunoService>();
+builder.Services.AddScoped<IMatriculaRepository,MatriculaRepository>();
+builder.Services.AddScoped<IMatriculaService,MatriculaService>();
+
 builder.Services.AddSingleton(mapper);
 
 

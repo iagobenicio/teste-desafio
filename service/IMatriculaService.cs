@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using teste_desafio.domain.entities;
 
 namespace teste_desafio.service
 {
     public interface IMatriculaService
     {
-        void MatricularAluno(int alunoId, int turmaId);
+        public void EnrollAluno(Matricula matricula);
+        public List<Matricula> GetAll();
+        public void Delete(int alunoId, int turmaId);
     }
 }

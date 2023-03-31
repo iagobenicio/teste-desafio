@@ -3,7 +3,7 @@ using teste_desafio.domain.entities;
 
 namespace teste_desafio.repositories
 {
-    public class TurmaRepository : IRepository<Turma>
+    public class TurmaRepository : ITurmaRepository
     {   
         private readonly MatriculaContext _context;
 
@@ -27,7 +27,7 @@ namespace teste_desafio.repositories
            return _context.turma!.ToList();
         }
 
-        public void Save(Turma entidade)
+        public void Register(Turma entidade)
         {
             _context.Add(entidade);
             _context.SaveChanges();
@@ -37,12 +37,20 @@ namespace teste_desafio.repositories
         {
             var turma = _context.turma!.Find(id);
 
-            if (turma != null)
+            if (turma == null)
             {
-                turma.Numero = entidade.Numero;
-                turma.Ano = entidade.Ano; 
-                _context.SaveChanges();
+                throw new Exception("Não foi possivel fazer as alterações. Turma não encontrada");
             }
+            turma.Numero = entidade.Numero;
+            turma.Ano = entidade.Ano; 
+            _context.Update(turma);
+            _context.SaveChanges();
+    
+        }
+        
+        public bool CheckExistTurma(int numeroTurma, int anoTurma)
+        {   
+            return _context.turma!.Any(turma => turma.Numero == numeroTurma && turma.Ano == anoTurma);
         }
     }
 }

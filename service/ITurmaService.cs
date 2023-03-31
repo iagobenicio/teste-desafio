@@ -1,12 +1,12 @@
-using teste_desafio.viewmodel;
+using teste_desafio.domain.entities;
 
 namespace teste_desafio.service
 {
     public interface ITurmaService
     {   
-        public void Save(TurmaViewModel turmaViewModel);
-        public void Update(TurmaViewModel turmaViewModel, int id);
+        public void Register(Turma turma);
+        public void Update(Turma turma, int id);
         public void Delete(int turmaId);
-        public List<TurmaViewModel> GetAll();
+        public List<Turma> GetAll();
     }
 }

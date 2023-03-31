@@ -1,41 +1,42 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using teste_desafio.domain.entities;
 using teste_desafio.service;
 using teste_desafio.viewmodel;
 
 namespace teste_desafio.Controllers
-{   
+{
     [ApiController]
     [Route("turma")]
     public class TurmaController : ControllerBase
     {
         private readonly ITurmaService _turmaService;
+        private readonly IMapper _mapper;
 
-        public TurmaController(ITurmaService turmaService)
+        public TurmaController(ITurmaService turmaService, IMapper mapper)
         {
 
             _turmaService = turmaService;
+            _mapper = mapper;
 
         }
 
         [HttpPost]
-        public IActionResult Add(TurmaViewModel turmaViewModel)
+        public IActionResult Register(TurmaViewModel turmaViewModel)
         {
             try
-            {
-                _turmaService.Save(turmaViewModel);
-                return Ok();
+            {   
+                var turmaEntity = _mapper.Map<Turma>(turmaViewModel);
+
+                _turmaService.Register(turmaEntity);
+                
+                return Ok(turmaViewModel);
             }
             catch (Exception e)
             {
-                NotFound(new {e.Message});
+                return  NotFound(new {e.Message});
             }
-            return NotFound();
+            
 
         }
 
@@ -45,14 +46,16 @@ namespace teste_desafio.Controllers
             try
             {
                 var turmas = _turmaService.GetAll();
-                return Ok(turmas);
+
+                var turmasViewModel = _mapper.Map<List<TurmaViewModel>>(turmas);
+
+                return Ok(turmasViewModel);
 
             }
             catch (Exception e)
             {
-                BadRequest(new {e.Message});
+               return BadRequest(new {e.Message});
             }
-            return BadRequest();
 
         }
 
@@ -60,15 +63,18 @@ namespace teste_desafio.Controllers
         public IActionResult Update(TurmaViewModel turmaViewModel,int id)
         {
             try
-            {
-                _turmaService.Update(turmaViewModel, id);
-                return Ok();
+            {   
+                var turmaEntity = _mapper.Map<Turma>(turmaViewModel);
+
+                _turmaService.Update(turmaEntity, id);
+
+                return Ok(turmaViewModel);
             }
             catch (Exception e)
             {
-                BadRequest(new {e.Message});
+               return BadRequest(new {e.Message});
             }
-            return BadRequest();
+
         }
 
         [HttpDelete]
@@ -81,9 +87,9 @@ namespace teste_desafio.Controllers
             }
             catch (Exception e)
             {
-                BadRequest(new {e.Message});
+                return BadRequest(new {e.Message});
             }
-            return BadRequest();
+
         }
    
     }

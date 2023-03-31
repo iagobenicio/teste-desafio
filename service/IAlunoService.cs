@@ -1,12 +1,12 @@
-using teste_desafio.viewmodel;
+using teste_desafio.domain.entities;
 
 namespace teste_desafio.service
 {
     public interface IAlunoService
     {
-        public void Save(AlunoViewModel alunoViewModel);
-        public void Update(AlunoViewModel alunoViewModel);
-        public void Delete(int alunoId);
-        public List<AlunoViewModel> GetAll();
+        public void Register(Aluno aluno, int turmaId);
+        public void Update(Aluno aluno, int id);
+        public void Delete(int aluno);
+        public List<Aluno> GetAll();
     }
 }

@@ -1,51 +1,60 @@
-using AutoMapper;
 using teste_desafio.domain.entities;
 using teste_desafio.repositories;
-using teste_desafio.viewmodel;
 
 namespace teste_desafio.service
 {
     public class TurmaService : ITurmaService
     {   
-        private readonly TurmaRepository _repository;
-        private readonly IMapper _mapper;
-        public TurmaService(TurmaRepository repository, IMapper mapper)
+        private readonly ITurmaRepository _repository;
+        private readonly IMatriculaRepository _matriculaRepository;
+
+        public TurmaService(ITurmaRepository repository, IMatriculaRepository matriculaRepository)
         {
             _repository = repository;
-            _mapper = mapper;
+            _matriculaRepository = matriculaRepository;
         }
 
         public void Delete(int turmaId)
-        {
+        {   
+            if (_matriculaRepository.GetCountEnrolled(turmaId) >= 1)
+            {
+                throw new Exception("Esta turma não pode ser deletada pois há alunos matriculados nela");
+            }
+
             _repository.Delete(turmaId);
         }
 
-        public List<TurmaViewModel> GetAll()
+        public List<Turma> GetAll()
         {
            var turmas = _repository.GetAll();
 
-           if (turmas == null)
-           {
-                throw new Exception("Nenhuma turma encontrada");
-           }
-           var turmasViewModel = _mapper.Map<List<TurmaViewModel>>(turmas);
-
-           return turmasViewModel;
+           return turmas;
         }
 
-        public void Save(TurmaViewModel turmaViewModel)
+        public void Register(Turma turma)
         {     
 
-            var turmaEntity = _mapper.Map<Turma>(turmaViewModel);
+            var existTumra = _repository.CheckExistTurma(turma.Numero,turma.Ano);
 
-            _repository.Save(turmaEntity);
+            if (existTumra)
+            {
+                throw new Exception("Já existe uma turma cadastrada com este número e ano");
+            }
+
+            _repository.Register(turma);
         }
 
-        public void Update(TurmaViewModel turmaViewModel, int id)
+        public void Update(Turma turma, int id)
         {
-            var turmaEntity = _mapper.Map<Turma>(turmaViewModel);
+            
+            var existTumra = _repository.CheckExistTurma(turma.Numero,turma.Ano);
 
-            _repository.Update(turmaEntity,id);
+            if (existTumra)
+            {
+                throw new Exception("Já existe uma turma cadastrada com este número e ano");
+            }
+            
+            _repository.Update(turma,id);
         }
     }
 }

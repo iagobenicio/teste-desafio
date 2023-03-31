@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using teste_desafio.domain.entities;
 using teste_desafio.repositories;
 
@@ -10,26 +6,39 @@ namespace teste_desafio.service
     public class MatriculaService : IMatriculaService
     {
         
-        private readonly IMatriculaRepository matriculaRepository;
+        private readonly IMatriculaRepository _matriculaRepository;
 
         public MatriculaService(IMatriculaRepository matriculaRepository)
         {
-            this.matriculaRepository = matriculaRepository;
+            _matriculaRepository = matriculaRepository;
             
         }
 
-        public void MatricularAluno(int alunoId, int turmaId)
-        {
-            if (matriculaRepository.PossuiMatricula(alunoId,turmaId))
+        public void EnrollAluno(Matricula matricula)
+        {   
+
+            if (_matriculaRepository.CheckExistEnrollment(matricula.AlunoId, matricula.TurmaId))
             {
-                throw new Exception("matricula já existe");
+                throw new Exception("Este aluno já esta matriculado nesta turma");
             }
-            var matricula = new Matricula
+
+            if (_matriculaRepository.GetCountEnrolled(matricula.TurmaId) >= 5)
             {
-                AlunoId = alunoId,
-                TurmaId = turmaId
-            };
-            matriculaRepository.Save(matricula);
+                throw new Exception("Não foi possivel matricular o aluno. Esta turma já atingiu o limite de alunos matriculados");
+            }
+
+            _matriculaRepository.Register(matricula);
+           
+        }
+
+        public List<Matricula> GetAll()
+        {
+            return _matriculaRepository.GetAll();
+        }
+
+        public void Delete(int alunoId, int turmaId)
+        {   
+            _matriculaRepository.DeleteEnrollment(alunoId,turmaId);
         }
     }
 }

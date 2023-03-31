@@ -1,6 +1,6 @@
 using teste_desafio.context;
 using teste_desafio.domain.entities;
-
+using Microsoft.EntityFrameworkCore;
 namespace teste_desafio.repositories
 {
     public class MatriculaRepository : IMatriculaRepository
@@ -8,7 +8,7 @@ namespace teste_desafio.repositories
         
         private readonly MatriculaContext _context;
 
-        MatriculaRepository(MatriculaContext context)
+        public MatriculaRepository(MatriculaContext context)
         {
             _context = context;
         }
@@ -18,19 +18,30 @@ namespace teste_desafio.repositories
             _context.matricula!.Find(id);
         }
 
+        public void DeleteEnrollment(int alunoId, int turmaId)
+        {
+            
+        }
+
         public List<Matricula> GetAll()
-        {
-            throw new NotImplementedException();
+        {   
+            return _context.matricula!.Include(a => a.Aluno).Include(t => t.Turma).ToList();
         }
 
-        public bool PossuiMatricula(int alunoId, int turmaId)
+        public bool CheckExistEnrollment(int alunoId, int turmaId)
         {
-            throw new NotImplementedException();
+            return _context.matricula!.Any(matricula => matricula.AlunoId == alunoId && matricula.TurmaId == turmaId);
         }
 
-        public void Save(Matricula entidade)
+        public int GetCountEnrolled(int turmaId)
         {
-            throw new NotImplementedException();
+           return _context.matricula!.Where(matricula => matricula.TurmaId == turmaId).Count();
+        }
+
+        public void Register(Matricula entidade)
+        {
+            _context.matricula!.Add(entidade);
+            _context.SaveChanges();
         }
         public void Update(Matricula entidade, int id)
         {

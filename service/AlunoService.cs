@@ -1,16 +1,17 @@
 using teste_desafio.domain.entities;
 using teste_desafio.repositories;
-using teste_desafio.viewmodel;
 
 namespace teste_desafio.service
 {
     public class AlunoService : IAlunoService
     {
-        private readonly AlunoRepository _repository;
+        private readonly IAlunoRepository _repository;
+        private readonly IMatriculaRepository _matriculaRepository;
 
-        public AlunoService(AlunoRepository repository)
+        public AlunoService(IAlunoRepository repository, IMatriculaRepository matriculaRepository)
         {
             _repository = repository;
+            _matriculaRepository = matriculaRepository;
         }
 
         public void Delete(int alunoId)
@@ -18,70 +19,54 @@ namespace teste_desafio.service
             _repository.Delete(alunoId);
         }
 
-        public List<AlunoViewModel> GetAll()
+        public List<Aluno> GetAll()
         {   
             var alunos = _repository.GetAll();
             
-            if(alunos == null)
+            return alunos;
+        }
+
+        public void Register(Aluno aluno, int turmaId)
+        {
+            var existCpf = _repository.CheckExistCpf(aluno.Cpf!);
+            
+
+            if (existCpf)
             {
-                throw new Exception(message: "Nenhum aluno encontrado");
+                throw new Exception("Este aluno já está cadastrado");
             }
+            
+            var existEmail = _repository.CheckExistEmail(aluno.Email!);
 
-            return MapperToViewModel(alunos);
-        }
-
-        public void Save(AlunoViewModel alunoViewModel)
-        {
-           var countCpf = _repository.CheckExistCpf(alunoViewModel.Cpf!);
-
-           if (countCpf == 1)
-           {
-             throw new Exception("Este aluno já esta cadastrado");
-           }
-
-            var alunoEntity = MapperToEntity(alunoViewModel);
-
-            _repository.Save(alunoEntity);
-
-        }
-
-        public void Update(AlunoViewModel alunoViewModel)
-        {
-            var countCpf = _repository.CheckExistCpf(alunoViewModel.Cpf!);
-
-            if (countCpf == 1)
+            if (existEmail)
             {
-                throw new Exception("");
+                throw new Exception("Este email já está sendo usado");
             }
+            
+            if (_matriculaRepository.GetCountEnrolled(turmaId) >= 5)
+            {
+                throw new Exception("Não foi possivel matricular o aluno. Esta turma já atingiu o limite de alunos matriculados");
+            }
+
+            aluno.MatricularAluno(turmaId);
+
+            _repository.Register(aluno);
+
         }
 
-
-        private Aluno MapperToEntity(AlunoViewModel alunoViewModel)
+        public void Update(Aluno aluno, int id)
         {
-            Aluno aluno = new Aluno();
-            aluno.Id = alunoViewModel.Id;
-            aluno.Cpf = alunoViewModel.Cpf;
-            aluno.Email = alunoViewModel.Email;
-            aluno.Name = alunoViewModel.Name;
+            
+            var existEmail = _repository.CheckExistEmail(aluno.Email!);
 
-            return aluno;
-        }
-
-        private List<AlunoViewModel> MapperToViewModel(List<Aluno> alunos)
-        {   
-            AlunoViewModel alunoViewModel = new ();
-            List<AlunoViewModel> alunosViewModels = new ();
-
-            foreach (var aluno in alunos)
-            {   
-                alunoViewModel.Id = aluno.Id;
-                alunoViewModel.Cpf = aluno.Cpf;
-                alunoViewModel.Name = aluno.Name;
-                alunoViewModel.Email = aluno.Email; 
-
-                alunosViewModels.Add(alunoViewModel);
+            if (existEmail)
+            {
+                throw new Exception("Este email já está sendo usado");
             }
-            return alunosViewModels;
+
+            _repository.Update(aluno,id);
+
         }
+
     }
 }

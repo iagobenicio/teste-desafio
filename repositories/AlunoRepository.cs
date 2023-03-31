@@ -28,15 +28,20 @@ namespace teste_desafio.repositories
             return _context.alunos!.ToList();
         }
 
-        public void Save(Aluno entidade)
+        public void Register(Aluno entidade)
         {   
-            _context.Add(entidade);
+            _context.alunos!.Add(entidade);
             _context.SaveChanges();
         }
 
-        public int CheckExistCpf(string cpf)
+        public bool CheckExistCpf(string cpf)
         {
-           return _context.alunos!.Where(aluno => aluno.Cpf == cpf).Count();
+            return _context.alunos!.Any(aluno => aluno.Cpf!.ToUpper() == cpf.ToUpper());
+        }
+
+        public bool CheckExistEmail(string email)
+        {
+            return _context.alunos!.Any(Aluno => Aluno.Email!.ToUpper() == email.ToUpper());
         }
         
         public void Update(Aluno entidade, int id)
@@ -45,7 +50,6 @@ namespace teste_desafio.repositories
 
             if (aluno != null)
             {   
-                aluno.Cpf = entidade.Cpf;
                 aluno.Email = entidade.Email;
                 aluno.Name = entidade.Name;
 
