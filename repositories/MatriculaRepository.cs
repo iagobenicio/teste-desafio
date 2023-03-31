@@ -1,6 +1,8 @@
 using teste_desafio.context;
 using teste_desafio.domain.entities;
 using Microsoft.EntityFrameworkCore;
+using teste_desafio.failures;
+
 namespace teste_desafio.repositories
 {
     public class MatriculaRepository : IMatriculaRepository
@@ -15,12 +17,18 @@ namespace teste_desafio.repositories
 
         public void Delete(int id)
         {
-            _context.matricula!.Find(id);
+           throw new NotImplementedException();
         }
 
         public void DeleteEnrollment(int alunoId, int turmaId)
         {
-            
+            var matricula = _context.matricula!.Where(matricula => matricula.AlunoId == alunoId && matricula.TurmaId == turmaId).FirstOrDefault();
+            if (matricula == null)
+            {
+                throw new EntityNotFound("Não foi possivel deletar dado. Matricula não encontrada");
+            }
+            _context.Remove(matricula);
+            _context.SaveChanges();
         }
 
         public List<Matricula> GetAll()

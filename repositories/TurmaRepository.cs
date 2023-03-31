@@ -1,5 +1,6 @@
 using teste_desafio.context;
 using teste_desafio.domain.entities;
+using teste_desafio.failures;
 
 namespace teste_desafio.repositories
 {
@@ -15,11 +16,12 @@ namespace teste_desafio.repositories
         public void Delete(int id)
         {
            var turma = _context.turma!.Find(id);
-           if(turma != null)
+           if(turma == null)
            {
-             _context.Remove(turma);
-             _context.SaveChanges();
+             throw new EntityNotFound("Não foi possivel deletar dado. Turma não encontrada");
            }
+            _context.Remove(turma);
+            _context.SaveChanges();
         }   
 
         public List<Turma> GetAll()
@@ -39,7 +41,7 @@ namespace teste_desafio.repositories
 
             if (turma == null)
             {
-                throw new Exception("Não foi possivel fazer as alterações. Turma não encontrada");
+                throw new EntityNotFound("Não foi possivel fazer as alterações. Turma não encontrada");
             }
             turma.Numero = entidade.Numero;
             turma.Ano = entidade.Ano; 

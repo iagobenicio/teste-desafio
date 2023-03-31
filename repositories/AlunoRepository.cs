@@ -1,5 +1,6 @@
 using teste_desafio.domain.entities;
 using teste_desafio.context;
+using teste_desafio.failures;
 
 namespace teste_desafio.repositories
 {
@@ -16,11 +17,12 @@ namespace teste_desafio.repositories
         public void Delete(int id)
         {
             var aluno = _context.alunos!.Find(id);
-            if (aluno != null)
+            if (aluno == null)
             {
-                _context.Remove(aluno);
-                _context.SaveChanges();
+                throw new EntityNotFound("Não foi possivel deletar este dado. Aluno não encontrado");
             }
+            _context.Remove(aluno);
+            _context.SaveChanges();
         }
 
         public List<Aluno> GetAll()
@@ -48,14 +50,15 @@ namespace teste_desafio.repositories
         {
             var aluno = _context.alunos!.Find(id);
 
-            if (aluno != null)
+            if (aluno == null)
             {   
-                aluno.Email = entidade.Email;
-                aluno.Name = entidade.Name;
-
-                _context.Update(aluno);
-                _context.SaveChanges();
+                throw new EntityNotFound("Não foi possivel fazer as alterações. Aluno não encontrado");
             }
+            aluno.Email = entidade.Email;
+            aluno.Name = entidade.Name;
+
+            _context.Update(aluno);
+            _context.SaveChanges();
         }
     }
 }
