@@ -18,7 +18,7 @@ namespace teste_desafio.repositories
            var turma = _context.turma!.Find(id);
            if(turma == null)
            {
-             throw new EntityNotFound("Não foi possivel deletar dado. Turma não encontrada");
+             throw new EntityNotFound("Não foi possivel deletar este dado. Turma não encontrada");
            }
             _context.Remove(turma);
             _context.SaveChanges();

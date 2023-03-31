@@ -25,7 +25,7 @@ namespace teste_desafio.repositories
             var matricula = _context.matricula!.Where(matricula => matricula.AlunoId == alunoId && matricula.TurmaId == turmaId).FirstOrDefault();
             if (matricula == null)
             {
-                throw new EntityNotFound("Não foi possivel deletar dado. Matricula não encontrada");
+                throw new EntityNotFound("Não foi possivel deletar este dado. Matricula não encontrada");
             }
             _context.Remove(matricula);
             _context.SaveChanges();
