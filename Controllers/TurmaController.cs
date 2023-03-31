@@ -35,7 +35,7 @@ namespace teste_desafio.Controllers
             }
             catch (Exception e)
             {
-                return  NotFound(new {e.Message});
+                return BadRequest(new {e.Message});
             }
             
 
