@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using teste_desafio.domain.entities;
+using teste_desafio.failures;
 using teste_desafio.service;
 using teste_desafio.viewmodel;
 
@@ -70,6 +71,10 @@ namespace teste_desafio.Controllers
 
                 return Ok(turmaViewModel);
             }
+            catch (EntityNotFound e)
+            {
+                return NotFound(new {e.Message});
+            }
             catch (Exception e)
             {
                return BadRequest(new {e.Message});
@@ -84,6 +89,10 @@ namespace teste_desafio.Controllers
             {
                 _turmaService.Delete(id);
                 return Ok();
+            }
+            catch (EntityNotFound e)
+            {
+                return NotFound(new {e.Message});
             }
             catch (Exception e)
             {

@@ -3,6 +3,7 @@ using teste_desafio.service;
 using teste_desafio.domain.entities;
 using AutoMapper;
 using teste_desafio.viewmodel;
+using teste_desafio.failures;
 
 namespace teste_desafio.Controllers
 {
@@ -61,6 +62,10 @@ namespace teste_desafio.Controllers
             {
                 _matriculaService.Delete(alunoId,turmaId);
                 return Ok();
+            }
+            catch (EntityNotFound e)
+            {
+                return NotFound(new {e.Message});
             }
             catch (Exception e)
             {

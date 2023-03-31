@@ -3,6 +3,7 @@ using teste_desafio.service;
 using AutoMapper;
 using teste_desafio.viewmodel;
 using teste_desafio.domain.entities;
+using teste_desafio.failures;
 
 namespace teste_desafio.Controllers
 {
@@ -74,6 +75,10 @@ namespace teste_desafio.Controllers
 
 
             }
+            catch (EntityNotFound e)
+            {
+                return NotFound(new {e.Message});
+            }
             catch (System.Exception e)
             {
                 
@@ -89,6 +94,10 @@ namespace teste_desafio.Controllers
             {
                 _alunoservice.Delete(id);
                 return Ok();
+            }
+            catch (EntityNotFound e)
+            {
+                return NotFound(new {e.Message});
             }
             catch (System.Exception)
             {
