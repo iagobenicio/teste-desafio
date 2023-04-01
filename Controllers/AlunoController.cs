@@ -33,9 +33,9 @@ namespace teste_desafio.Controllers
 
                 _alunoservice.Register(alunoEntity,turmaId);
 
-                var alunoRegistered = _mapper.Map<AlunoViewModel>(alunoEntity);
+                alunoViewModel.Id = alunoEntity.Id;
 
-                return StatusCode(StatusCodes.Status201Created,alunoRegistered);
+                return StatusCode(StatusCodes.Status201Created,alunoViewModel);
             }
             catch (Exception e)
             {
@@ -67,18 +67,18 @@ namespace teste_desafio.Controllers
         }
 
         [HttpPatch]
-        public IActionResult Update(AlunoViewModel alunoViewModel, int id)
+        public IActionResult Update(AlunoUpdateViewModel alunoUpdateViewModel, int id)
         {
             try
             {   
 
-                var alunoEntity = _mapper.Map<Aluno>(alunoViewModel);
+                var alunoEntity = _mapper.Map<Aluno>(alunoUpdateViewModel);
 
                 _alunoservice.Update(alunoEntity,id);
 
-                var alunoUpdated = _mapper.Map<AlunoViewModel>(alunoEntity);
+                alunoUpdateViewModel.Id = id;
 
-                return Ok(alunoUpdated);
+                return Ok(alunoUpdateViewModel);
 
 
             }

@@ -12,9 +12,11 @@ var config = new MapperConfiguration(config =>
 
     config.CreateMap<Aluno,AlunoViewModel>();
     config.CreateMap<AlunoViewModel,Aluno>();
+    config.CreateMap<AlunoUpdateViewModel,Aluno>();
     config.CreateMap<Turma,TurmaViewModel>();
     config.CreateMap<TurmaViewModel,Turma>();
     config.CreateMap<MatriculaViewModel,Matricula>();
+    config.CreateMap<Matricula,MatriculaViewModel>();
     config.CreateMap<Matricula,MatriculaRelacaoViewModel>();
 
 });

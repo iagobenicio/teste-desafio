@@ -36,14 +36,14 @@ namespace teste_desafio.repositories
             _context.SaveChanges();
         }
 
-        public bool CheckExistCpf(string cpf)
-        {
-            return _context.alunos!.Any(aluno => aluno.Cpf!.ToUpper() == cpf.ToUpper());
+        public bool CheckExistCpfOrEmail(string cpf,string email)
+        {   
+            return _context.alunos!.Any(aluno => aluno.Cpf!.ToUpper() == cpf.ToUpper() || aluno.Email!.ToUpper() == email.ToUpper());
         }
 
-        public bool CheckExistEmail(string email)
+        public bool CheckExistEmail(string email, int id)
         {
-            return _context.alunos!.Any(Aluno => Aluno.Email!.ToUpper() == email.ToUpper());
+            return _context.alunos!.Any(Aluno => Aluno.Email!.ToUpper() == email.ToUpper() && Aluno.Id != id);
         }
         
         public void Update(Aluno entidade, int id)
@@ -56,7 +56,7 @@ namespace teste_desafio.repositories
             }
             aluno.Email = entidade.Email;
             aluno.Name = entidade.Name;
-
+            
             _context.Update(aluno);
             _context.SaveChanges();
         }

@@ -28,12 +28,12 @@ namespace teste_desafio.Controllers
             try
             {   
                 var turmaEntity = _mapper.Map<Turma>(turmaViewModel);
-
+                
                 _turmaService.Register(turmaEntity);
                 
-                var turmaRegistered = _mapper.Map<TurmaViewModel>(turmaEntity);
+                turmaViewModel.Id = turmaEntity.Id;
 
-                return StatusCode(StatusCodes.Status201Created,turmaRegistered);
+                return StatusCode(StatusCodes.Status201Created,turmaViewModel);
             }
             catch (Exception e)
             {
@@ -71,9 +71,9 @@ namespace teste_desafio.Controllers
 
                 _turmaService.Update(turmaEntity, id);
 
-                var turmaUpdated = _mapper.Map<TurmaViewModel>(turmaEntity);
+                turmaViewModel.Id = id;
 
-                return Ok(turmaUpdated);
+                return Ok(turmaViewModel);
             }
             catch (EntityNotFound e)
             {

@@ -49,7 +49,10 @@ namespace teste_desafio.repositories
             _context.SaveChanges();
     
         }
-        
+        public bool CheckExistTurmaById(int turmaID)
+        {
+            return _context.turma!.Any(turma => turma.Id == turmaID);
+        }
         public bool CheckExistTurma(int numeroTurma, int anoTurma)
         {   
             return _context.turma!.Any(turma => turma.Numero == numeroTurma && turma.Ano == anoTurma);

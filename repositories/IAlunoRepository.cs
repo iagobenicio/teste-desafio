@@ -4,8 +4,8 @@ namespace teste_desafio.repositories
 {
     public interface IAlunoRepository : IRepository<Aluno>
     {
-        public bool CheckExistCpf(string cpf);
+        public bool CheckExistCpfOrEmail(string cpf, string email);
 
-        public bool CheckExistEmail(string email);
+        public bool CheckExistEmail(string email,int id);
     }
 }
