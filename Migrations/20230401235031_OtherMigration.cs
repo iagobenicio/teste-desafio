@@ -5,7 +5,7 @@
 namespace teste_desafio.Migrations
 {
     /// <inheritdoc />
-    public partial class SecondMigration : Migration
+    public partial class OtherMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,13 +14,15 @@ namespace teste_desafio.Migrations
                 name: "alunos",
                 columns: table => new
                 {
-                    Cpf = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Cpf = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_alunos", x => x.Cpf);
+                    table.PrimaryKey("PK_alunos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -41,17 +43,17 @@ namespace teste_desafio.Migrations
                 name: "matricula",
                 columns: table => new
                 {
-                    AlunoCpf = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AlunoId = table.Column<int>(type: "int", nullable: false),
                     TurmaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_matricula", x => new { x.AlunoCpf, x.TurmaId });
+                    table.PrimaryKey("PK_matricula", x => new { x.AlunoId, x.TurmaId });
                     table.ForeignKey(
-                        name: "FK_matricula_alunos_AlunoCpf",
-                        column: x => x.AlunoCpf,
+                        name: "FK_matricula_alunos_AlunoId",
+                        column: x => x.AlunoId,
                         principalTable: "alunos",
-                        principalColumn: "Cpf",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_matricula_turma_TurmaId",
@@ -60,6 +62,18 @@ namespace teste_desafio.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_alunos_Cpf",
+                table: "alunos",
+                column: "Cpf",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_alunos_Email",
+                table: "alunos",
+                column: "Email",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_matricula_TurmaId",

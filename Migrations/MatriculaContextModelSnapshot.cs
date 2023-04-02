@@ -23,31 +23,44 @@ namespace teste_desafio.Migrations
 
             modelBuilder.Entity("teste_desafio.domain.entities.Aluno", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("Cpf")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Cpf");
+                    b.HasKey("Id");
+
+                    b.HasIndex("Cpf")
+                        .IsUnique();
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("alunos");
                 });
 
             modelBuilder.Entity("teste_desafio.domain.entities.Matricula", b =>
                 {
-                    b.Property<string>("AlunoCpf")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AlunoId")
+                        .HasColumnType("int");
 
                     b.Property<int>("TurmaId")
                         .HasColumnType("int");
 
-                    b.HasKey("AlunoCpf", "TurmaId");
+                    b.HasKey("AlunoId", "TurmaId");
 
                     b.HasIndex("TurmaId");
 
@@ -76,8 +89,8 @@ namespace teste_desafio.Migrations
             modelBuilder.Entity("teste_desafio.domain.entities.Matricula", b =>
                 {
                     b.HasOne("teste_desafio.domain.entities.Aluno", "Aluno")
-                        .WithMany()
-                        .HasForeignKey("AlunoCpf")
+                        .WithMany("Matricula")
+                        .HasForeignKey("AlunoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -90,6 +103,11 @@ namespace teste_desafio.Migrations
                     b.Navigation("Aluno");
 
                     b.Navigation("Turma");
+                });
+
+            modelBuilder.Entity("teste_desafio.domain.entities.Aluno", b =>
+                {
+                    b.Navigation("Matricula");
                 });
 
             modelBuilder.Entity("teste_desafio.domain.entities.Turma", b =>

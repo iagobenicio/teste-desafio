@@ -1,7 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace teste_desafio.domain.entities
-{
+{   
+    [Index(nameof(Cpf),IsUnique = true)]
+    [Index(nameof(Email),IsUnique = true)]
     public class Aluno 
     {
         public int Id { get; set; }
