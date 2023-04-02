@@ -14,14 +14,14 @@ namespace teste_desafio.service
             _matriculaRepository = matriculaRepository;
         }
 
-        public void Delete(int turmaId)
+        public async Task Delete(int turmaId)
         {   
             if (_matriculaRepository.GetCountEnrolled(turmaId) >= 1)
             {
                 throw new Exception("Esta turma não pode ser deletada pois há alunos matriculados nela");
             }
 
-            _repository.Delete(turmaId);
+            await _repository.Delete(turmaId);
         }
 
         public List<Turma> GetAll()
@@ -31,7 +31,7 @@ namespace teste_desafio.service
            return turmas;
         }
 
-        public void Register(Turma turma)
+        public async Task Register(Turma turma)
         {     
 
             var existTumra = _repository.CheckExistTurma(turma.Numero,turma.Ano);
@@ -41,10 +41,10 @@ namespace teste_desafio.service
                 throw new Exception("Já existe uma turma cadastrada com este número e ano");
             }
 
-            _repository.Register(turma);
+            await _repository.Register(turma);
         }
 
-        public void Update(Turma turma, int id)
+        public async Task Update(Turma turma, int id)
         {
             
             var existTumra = _repository.CheckExistTurma(turma.Numero,turma.Ano);
@@ -54,7 +54,7 @@ namespace teste_desafio.service
                 throw new Exception("Já existe uma turma cadastrada com este número e ano");
             }
             
-            _repository.Update(turma,id);
+            await _repository.Update(turma,id);
         }
     }
 }

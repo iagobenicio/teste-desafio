@@ -16,9 +16,9 @@ namespace teste_desafio.service
             _turmaRepository = turmaRepository;
         }
 
-        public void Delete(int alunoId)
+        public async Task Delete(int alunoId)
         {
-            _repository.Delete(alunoId);
+            await _repository.Delete(alunoId);
         }
 
         public List<Aluno> GetAll()
@@ -28,7 +28,7 @@ namespace teste_desafio.service
             return alunos;
         }
 
-        public void Register(Aluno aluno, int turmaId)
+        public async Task Register(Aluno aluno, int turmaId)
         {
             var existCpfOrEmail = _repository.CheckExistCpfOrEmail(aluno.Cpf!,aluno.Email!);
 
@@ -47,11 +47,11 @@ namespace teste_desafio.service
 
             aluno.MatricularAluno(turmaId);
 
-            _repository.Register(aluno);
+            await _repository.Register(aluno);
 
         }
 
-        public void Update(Aluno aluno, int id)
+        public async Task Update(Aluno aluno, int id)
         {
             
             var existEmail = _repository.CheckExistEmail(aluno.Email!, id);
@@ -61,7 +61,7 @@ namespace teste_desafio.service
                 throw new Exception("Este email já está sendo usado");
             }
 
-            _repository.Update(aluno,id);
+            await _repository.Update(aluno,id);
 
         }
 

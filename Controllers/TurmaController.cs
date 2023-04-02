@@ -23,13 +23,13 @@ namespace teste_desafio.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(TurmaViewModel turmaViewModel)
+        public async Task<IActionResult> Register(TurmaViewModel turmaViewModel)
         {
             try
             {   
                 var turmaEntity = _mapper.Map<Turma>(turmaViewModel);
                 
-                _turmaService.Register(turmaEntity);
+                await _turmaService.Register(turmaEntity);
                 
                 turmaViewModel.Id = turmaEntity.Id;
 
@@ -63,13 +63,13 @@ namespace teste_desafio.Controllers
         }
 
         [HttpPut("atualizar/{id}")]
-        public IActionResult Update(TurmaViewModel turmaViewModel,int id)
+        public async Task<IActionResult> Update(TurmaViewModel turmaViewModel,int id)
         {
             try
             {   
                 var turmaEntity = _mapper.Map<Turma>(turmaViewModel);
 
-                _turmaService.Update(turmaEntity, id);
+                await _turmaService.Update(turmaEntity, id);
 
                 turmaViewModel.Id = id;
 
@@ -87,11 +87,11 @@ namespace teste_desafio.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                _turmaService.Delete(id);
+                await _turmaService.Delete(id);
                 return Ok();
             }
             catch (EntityNotFound e)

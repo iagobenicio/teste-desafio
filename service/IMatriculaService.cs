@@ -4,8 +4,8 @@ namespace teste_desafio.service
 {
     public interface IMatriculaService
     {
-        public void EnrollAluno(Matricula matricula);
+        public Task EnrollAluno(Matricula matricula);
         public List<Matricula> GetAll();
-        public void Delete(int alunoId, int turmaId);
+        public Task Delete(int alunoId, int turmaId);
     }
 }

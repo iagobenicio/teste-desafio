@@ -14,7 +14,7 @@ namespace teste_desafio.repositories
             _context = context;
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var aluno = _context.alunos!.Find(id);
             if (aluno == null)
@@ -22,7 +22,7 @@ namespace teste_desafio.repositories
                 throw new EntityNotFound("Não foi possivel deletar este dado. Aluno não encontrado");
             }
             _context.Remove(aluno);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public List<Aluno> GetAll()
@@ -30,10 +30,10 @@ namespace teste_desafio.repositories
             return _context.alunos!.ToList();
         }
 
-        public void Register(Aluno entidade)
+        public async Task Register(Aluno entidade)
         {   
             _context.alunos!.Add(entidade);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public bool CheckExistCpfOrEmail(string cpf,string email)
@@ -46,7 +46,7 @@ namespace teste_desafio.repositories
             return _context.alunos!.Any(Aluno => Aluno.Email!.ToUpper() == email.ToUpper() && Aluno.Id != id);
         }
         
-        public void Update(Aluno entidade, int id)
+        public async Task Update(Aluno entidade, int id)
         {
             var aluno = _context.alunos!.Find(id);
 
@@ -58,7 +58,7 @@ namespace teste_desafio.repositories
             aluno.Name = entidade.Name;
             
             _context.Update(aluno);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

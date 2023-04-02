@@ -8,7 +8,7 @@ namespace teste_desafio.repositories
 
         public int GetCountEnrolled(int turmaId);
 
-        public void DeleteEnrollment(int alunoId, int turmaId);
+        public Task DeleteEnrollment(int alunoId, int turmaId);
 
     }
 }

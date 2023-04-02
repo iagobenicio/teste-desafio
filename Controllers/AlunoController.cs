@@ -24,14 +24,14 @@ namespace teste_desafio.Controllers
 
 
         [HttpPost]
-        public IActionResult Register(AlunoViewModel alunoViewModel, int turmaId)
+        public async Task<IActionResult> Register(AlunoViewModel alunoViewModel, int turmaId)
         {
 
             try
             {   
                 var alunoEntity = _mapper.Map<Aluno>(alunoViewModel);
 
-                _alunoservice.Register(alunoEntity,turmaId);
+                await _alunoservice.Register(alunoEntity,turmaId);
 
                 alunoViewModel.Id = alunoEntity.Id;
 
@@ -67,14 +67,14 @@ namespace teste_desafio.Controllers
         }
 
         [HttpPatch]
-        public IActionResult Update(AlunoUpdateViewModel alunoUpdateViewModel, int id)
+        public async Task<IActionResult> Update(AlunoUpdateViewModel alunoUpdateViewModel, int id)
         {
             try
             {   
 
                 var alunoEntity = _mapper.Map<Aluno>(alunoUpdateViewModel);
 
-                _alunoservice.Update(alunoEntity,id);
+                await _alunoservice.Update(alunoEntity,id);
 
                 alunoUpdateViewModel.Id = id;
 
@@ -95,11 +95,11 @@ namespace teste_desafio.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                _alunoservice.Delete(id);
+                await _alunoservice.Delete(id);
                 return Ok();
             }
             catch (EntityNotFound e)

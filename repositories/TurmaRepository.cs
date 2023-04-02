@@ -13,7 +13,7 @@ namespace teste_desafio.repositories
             _context = context;
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
            var turma = _context.turma!.Find(id);
            if(turma == null)
@@ -21,7 +21,7 @@ namespace teste_desafio.repositories
              throw new EntityNotFound("Não foi possivel deletar este dado. Turma não encontrada");
            }
             _context.Remove(turma);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }   
 
         public List<Turma> GetAll()
@@ -29,13 +29,13 @@ namespace teste_desafio.repositories
            return _context.turma!.ToList();
         }
 
-        public void Register(Turma entidade)
+        public async Task Register(Turma entidade)
         {
             _context.Add(entidade);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(Turma entidade, int id)
+        public async Task Update(Turma entidade, int id)
         {
             var turma = _context.turma!.Find(id);
 
@@ -46,7 +46,7 @@ namespace teste_desafio.repositories
             turma.Numero = entidade.Numero;
             turma.Ano = entidade.Ano; 
             _context.Update(turma);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
     
         }
         public bool CheckExistTurmaById(int turmaID)

@@ -4,9 +4,9 @@ namespace teste_desafio.service
 {
     public interface ITurmaService
     {   
-        public void Register(Turma turma);
-        public void Update(Turma turma, int id);
-        public void Delete(int turmaId);
+        public Task Register(Turma turma);
+        public Task Update(Turma turma, int id);
+        public Task Delete(int turmaId);
         public List<Turma> GetAll();
     }
 }

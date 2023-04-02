@@ -14,7 +14,7 @@ namespace teste_desafio.service
             
         }
 
-        public void EnrollAluno(Matricula matricula)
+        public async Task EnrollAluno(Matricula matricula)
         {   
 
             if (_matriculaRepository.CheckExistEnrollment(matricula.AlunoId, matricula.TurmaId))
@@ -27,7 +27,7 @@ namespace teste_desafio.service
                 throw new Exception("Não foi possivel matricular o aluno. Esta turma já atingiu o limite de alunos matriculados");
             }
 
-            _matriculaRepository.Register(matricula);
+            await _matriculaRepository.Register(matricula);
            
         }
 
@@ -36,9 +36,9 @@ namespace teste_desafio.service
             return _matriculaRepository.GetAll();
         }
 
-        public void Delete(int alunoId, int turmaId)
+        public async Task Delete(int alunoId, int turmaId)
         {   
-            _matriculaRepository.DeleteEnrollment(alunoId,turmaId);
+            await _matriculaRepository.DeleteEnrollment(alunoId,turmaId);
         }
     }
 }

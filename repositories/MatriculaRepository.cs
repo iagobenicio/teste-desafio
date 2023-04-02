@@ -15,12 +15,12 @@ namespace teste_desafio.repositories
             _context = context;
         }
 
-        public void Delete(int id)
+        public Task Delete(int id)
         {
            throw new NotImplementedException();
         }
 
-        public void DeleteEnrollment(int alunoId, int turmaId)
+        public async Task DeleteEnrollment(int alunoId, int turmaId)
         {
             var matricula = _context.matricula!.Where(matricula => matricula.AlunoId == alunoId && matricula.TurmaId == turmaId).FirstOrDefault();
             if (matricula == null)
@@ -28,7 +28,7 @@ namespace teste_desafio.repositories
                 throw new EntityNotFound("Não foi possivel deletar este dado. Matricula não encontrada");
             }
             _context.Remove(matricula);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public List<Matricula> GetAll()
@@ -46,12 +46,12 @@ namespace teste_desafio.repositories
            return _context.matricula!.Where(matricula => matricula.TurmaId == turmaId).Count();
         }
 
-        public void Register(Matricula entidade)
+        public async Task Register(Matricula entidade)
         {
             _context.matricula!.Add(entidade);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
-        public void Update(Matricula entidade, int id)
+        public Task Update(Matricula entidade, int id)
         {
             throw new NotImplementedException();
         }

@@ -21,13 +21,13 @@ namespace teste_desafio.Controllers
         }
 
         [HttpPost]
-        public IActionResult EnrollAluno(MatriculaViewModel matriculaViewModel)
+        public async Task<IActionResult> EnrollAluno(MatriculaViewModel matriculaViewModel)
         {   
             try
             {
                 var matricula = _mapper.Map<Matricula>(matriculaViewModel);
 
-                _matriculaService.EnrollAluno(matricula);
+                await _matriculaService.EnrollAluno(matricula);
 
                 return StatusCode(StatusCodes.Status201Created,matriculaViewModel);
             }
@@ -58,11 +58,11 @@ namespace teste_desafio.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete(int alunoId, int turmaId)
+        public async Task<IActionResult> Delete(int alunoId, int turmaId)
         {
             try
             {
-                _matriculaService.Delete(alunoId,turmaId);
+                await _matriculaService.Delete(alunoId,turmaId);
                 return Ok();
             }
             catch (EntityNotFound e)
