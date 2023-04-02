@@ -46,6 +46,11 @@ namespace teste_desafio.repositories
             return _context.alunos!.Any(Aluno => Aluno.Email!.ToUpper() == email.ToUpper() && Aluno.Id != id);
         }
         
+        public bool CheckExistAlunoById(int id)
+        {
+            return _context.alunos!.Any(aluno => aluno.Id == id);
+        }
+
         public async Task Update(Aluno entidade, int id)
         {
             var aluno = _context.alunos!.Find(id);

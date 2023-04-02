@@ -7,15 +7,28 @@ namespace teste_desafio.service
     {
         
         private readonly IMatriculaRepository _matriculaRepository;
+        private readonly IAlunoRepository _alunoRepository;
+        private readonly ITurmaRepository _turmaRepository;
 
-        public MatriculaService(IMatriculaRepository matriculaRepository)
+        public MatriculaService(IMatriculaRepository matriculaRepository, IAlunoRepository alunoRepository, ITurmaRepository turmaRepository)
         {
             _matriculaRepository = matriculaRepository;
+            _alunoRepository = alunoRepository;
+            _turmaRepository = turmaRepository;
             
         }
 
         public async Task EnrollAluno(Matricula matricula)
         {   
+            if (!_alunoRepository.CheckExistAlunoById(matricula.AlunoId))
+            {
+                throw new Exception("Não foi possivel matricular o aluno. Este aluno não existe");
+            }
+         
+            if (!_turmaRepository.CheckExistTurmaById(matricula.TurmaId))
+            {
+                throw new Exception("Não foi possivel matricular o aluno. Esta turma não existe");
+            }
 
             if (_matriculaRepository.CheckExistEnrollment(matricula.AlunoId, matricula.TurmaId))
             {

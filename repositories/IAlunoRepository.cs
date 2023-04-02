@@ -7,5 +7,7 @@ namespace teste_desafio.repositories
         public bool CheckExistCpfOrEmail(string cpf, string email);
 
         public bool CheckExistEmail(string email,int id);
+
+        public bool CheckExistAlunoById(int id);
     }
 }
